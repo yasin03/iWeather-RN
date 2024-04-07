@@ -1,29 +1,31 @@
-import axios from 'axios';
-const key = process.env.API_KEY;
+import axios from "axios";
+import { OPENWEATHER_API_KEY, WEATHERAPI_API_KEY } from "../src/utils/settings";
+const key = OPENWEATHER_API_KEY;
+const key2 = WEATHERAPI_API_KEY;
 
-const forecastEndpoints = params =>
-  `https://api.weatherapi.com/v1/forecast.json?key=ecf700bdb56546df9cc120424230106&q=${params.cityName}&days=${params.days}`;
-
-const locationsEndpoints = params =>
-  `https://api.weatherapi.com/v1/search.json?key=ecf700bdb56546df9cc120424230106&q=${params.cityName}`;
-
-const apiCall = async endpoint => {
-  const options = {
-    method: 'GET',
-    url: endpoint,
-  };
-
+export const fetchForecast = async (location) => {
   try {
-    const response = await axios.request(options);
-    return response.data;
+    const res = await axios.get(
+      `http://api.weatherapi.com/v1/forecast.json?key=${key2}&q=${location}&days=7&aqi=yes&alerts=no`
+    );
+
+    return res.data;
   } catch (error) {
-    console.log(error);
+    console.error("Error fetching forecast data : ", error);
+    return null;
   }
 };
 
-export const fetchWeatherForecast = params => {
-  return apiCall(forecastEndpoints(params));
+const fetchCities = async (searchTerm) => {
+  try {
+    const response = await axios.get(
+      `https://api.weatherapi.com/v1/search.json?key=${key2}&q=${searchTerm}`
+    );
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching cities :", error);
+    return [];
+  }
 };
-export const fetchLocations = params => {
-  return apiCall(locationsEndpoints(params));
-};
+
+export default fetchCities;

@@ -8,7 +8,7 @@ const DayDetail = (props) => {
     <View className="flex flex-col justify-between items-center">
       <Text className="text-gray-200">{day}</Text>
       <Image
-        source={require("../../assets/weatherIcons/ClearDay.png")}
+        source={require(`../../assets/weatherIcons/day/116.png`)}
         className="w-12 h-12"
       />
       <Text className="text-white">{maxTemp}</Text>
